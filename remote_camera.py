@@ -18,8 +18,8 @@ class VideoStream:
 
     thread = None
 
-    host = "localhost"
-    port = 2905
+    host = "0.0.0.0"
+    port = 9999
     write_socket = None
 
     image_width = 640
@@ -39,6 +39,7 @@ class VideoStream:
             try:
                 VideoStream.write_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
                 VideoStream.write_socket.connect((VideoStream.host, VideoStream.port))
+                print(f"Connection Established")
             except ConnectionRefusedError as E:
                 VideoStream.update_status("Connection refused ...")
                 VideoStream.press_stop()
@@ -97,12 +98,15 @@ class VideoStream:
             VideoStream.thread = threading.Thread(target=VideoStream.image_capture_thread)
             VideoStream.update_status("Capture started ...")
             VideoStream.thread.start()
+            print(f"Thread Started")
 
     @classmethod
     def image_capture_thread(cls):
         while VideoStream.run is True:
             try:
+                print(f"Before read")
                 return_value , frame = VideoStream.obj.video_cap.read()
+                print(f"After read")
             except:
                 VideoStream.update_status("Camera closed ...")
                 VideoStream.press_stop()
@@ -116,6 +120,7 @@ class VideoStream:
                 VideoStream.press_stop()
                 return
 
+            print(f"Capture Loop")
 
         VideoStream.obj.video_cap.release()
 
@@ -123,6 +128,7 @@ class VideoStream:
     def transmit_frame(cls, frame):
         frame = cv2.resize(frame, (VideoStream.image_width, VideoStream.image_height))
         data = pickle.dumps(frame)
+        print(f"Sending Image")
         VideoStream.write_socket.sendall(struct.pack("L", len(data))+data)
 
 root = tk.Tk()

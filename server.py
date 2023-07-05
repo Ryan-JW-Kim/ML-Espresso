@@ -5,8 +5,8 @@ import socket
 import cv2
 import matplotlib.pyplot as plt
 import time
-host = ""
-port = 2905
+host = "0.0.0.0"
+port = 9999
 
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 s.settimeout(3)
