@@ -19,7 +19,7 @@ def service_connection():
     message_size = struct.calcsize("L")
     count = 0
     connection_valid = True
-    
+
     while True:
         while len(data) < message_size:
             packet = connection.recv(4096)
@@ -50,8 +50,8 @@ def service_connection():
         frame = pickle.loads(frame_data)
         print(f"FRAME ({count})")    
         count += 1
-        # plt.imshow(frame)
-        # plt.show()
+        plt.imshow(frame)
+        plt.show()
 
 while True:
     time.sleep(1)

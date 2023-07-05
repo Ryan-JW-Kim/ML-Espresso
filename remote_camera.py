@@ -127,7 +127,7 @@ class VideoStream:
 
 root = tk.Tk()
 VideoStream.root
-root.geometry("800x800")
+root.geometry("800x480")
 root.title("Test")
 
 VideoStream.text = StringVar()
