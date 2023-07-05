@@ -102,6 +102,7 @@ class VideoStream:
 
     @classmethod
     def image_capture_thread(cls):
+        print(f"Within thread run is {VideoStream.run}")
         while VideoStream.run is True:
             try:
                 print(f"Before read")
