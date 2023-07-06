@@ -18,8 +18,8 @@ class VideoStream:
 
     thread = None
 
-    host = "0.0.0.0"
-    port = 9999
+    host = "192.168.1.188"
+    port = 8080
     write_socket = None
 
     image_width = 640
