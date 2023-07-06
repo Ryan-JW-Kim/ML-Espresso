@@ -1,17 +1,30 @@
 import socket
 
-HOST = ""  # The server's hostname or IP address
-PORT = 0  # The port used by the server
 
+def main():
+    HOST = "0.0.0.0"  # The server's hostname or IP address
+    PORT = 8080  # The port used by the server
 
-with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
-    s.bind((HOST, PORT))
-    s.listen()
-    conn, addr = s.accept()
-    with conn:
-        print(f"Connected by {addr}")
-        while True:
-            data = conn.recv(1024)
+    print(socket.gethostname())
+
+    mySocket = socket.socket()
+    mySocket.bind((HOST, PORT))
+
+    print("After bind")
+    mySocket.listen(1)
+
+    print("After listen")
+    conn, addr = mySocket.accept()
+
+    print ("Connection from: " + str(addr))
+    while True:
+            data = conn.recv(1024).decode()
             if not data:
-                break
-            conn.sendall(data)
+                    break
+            print ("from connected  user: " + str(data))
+
+            data = str(data).upper()
+            print ("sending: " + str(data))
+            conn.send(data.encode())
+
+main()

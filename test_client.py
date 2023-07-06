@@ -1,11 +1,19 @@
 import socket
 
-HOST = "192.168.1.192"  # The server's hostname or IP address
+HOST = "192.168.1.188"  # The server's hostname or IP address
 PORT = 8080  # The port used by the server
 
-with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
-    s.connect((HOST, PORT))
-    s.sendall(b"Hello, world")
-    data = s.recv(1024)
+mySocket = socket.socket()
+mySocket.connect((HOST, PORT))
 
-print(f"Received {data!r}")
+message = input(" -> ")
+
+while message != 'q':
+        mySocket.send(message.encode())
+        data = mySocket.recv(1024).decode()
+
+        print ('Received from server: ' + data)
+
+        message = input(" -> ")
+
+mySocket.close()
