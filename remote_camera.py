@@ -6,7 +6,9 @@ import cv2
 import socket
 import pickle
 import struct
+import time
 
+debug = True
 class VideoStream:
     obj = None
     root = None
@@ -118,6 +120,7 @@ class VideoStream:
                 VideoStream.update_status("Transmitted ...")
             except:
                 VideoStream.update_status("Transmission failed ...")
+                if debug: raise Exception(f"restart")
                 VideoStream.press_stop()
                 return
 
@@ -127,24 +130,31 @@ class VideoStream:
 
     @classmethod
     def transmit_frame(cls, frame):
-        frame = cv2.resize(frame, (VideoStream.image_width, VideoStream.image_height))
+        # frame = cv2.resize(frame, (VideoStream.image_width, VideoStream.image_height))
         data = pickle.dumps(frame)
         print(f"Sending Image")
         VideoStream.write_socket.sendall(struct.pack("L", len(data))+data)
 
-root = tk.Tk()
-VideoStream.root
-root.geometry("800x480")
-root.title("Test")
+while True:
 
-VideoStream.text = StringVar()
-VideoStream.update_status(VideoStream.status)
-status_label = tk.Label(root, textvariable=VideoStream.text)
-status_label.pack()
+    try:
 
-button_start = tk.Button(root, text="START", command=VideoStream.press_start, bg="green")
-button_start.config(width=35, height=10)
-button_start.place(x=0 , y=0)
-button_start.pack(ipadx=5, ipady=5, expand=5)
+        root = tk.Tk()
+        VideoStream.root
+        root.geometry("800x480")
+        root.title("Test")
 
-root.mainloop()
+        VideoStream.text = StringVar()
+        VideoStream.update_status(VideoStream.status)
+        status_label = tk.Label(root, textvariable=VideoStream.text)
+        status_label.pack()
+
+        button_start = tk.Button(root, text="START", command=VideoStream.press_start, bg="green")
+        button_start.config(width=35, height=10)
+        button_start.place(x=0 , y=0)
+        button_start.pack(ipadx=5, ipady=5, expand=5)
+
+        root.mainloop()
+    
+    except:
+        time.sleep(2)
