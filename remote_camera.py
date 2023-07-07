@@ -120,7 +120,6 @@ class VideoStream:
                 VideoStream.update_status("Transmitted ...")
             except:
                 VideoStream.update_status("Transmission failed ...")
-                if debug: raise Exception(f"restart")
                 VideoStream.press_stop()
                 return
 
@@ -135,26 +134,20 @@ class VideoStream:
         print(f"Sending Image")
         VideoStream.write_socket.sendall(struct.pack("L", len(data))+data)
 
-while True:
 
-    try:
+root = tk.Tk()
+VideoStream.root
+root.geometry("800x480")
+root.title("Test")
 
-        root = tk.Tk()
-        VideoStream.root
-        root.geometry("800x480")
-        root.title("Test")
+VideoStream.text = StringVar()
+VideoStream.update_status(VideoStream.status)
+status_label = tk.Label(root, textvariable=VideoStream.text)
+status_label.pack()
 
-        VideoStream.text = StringVar()
-        VideoStream.update_status(VideoStream.status)
-        status_label = tk.Label(root, textvariable=VideoStream.text)
-        status_label.pack()
+button_start = tk.Button(root, text="START", command=VideoStream.press_start, bg="green")
+button_start.config(width=35, height=10)
+button_start.place(x=0 , y=0)
+button_start.pack(ipadx=5, ipady=5, expand=5)
 
-        button_start = tk.Button(root, text="START", command=VideoStream.press_start, bg="green")
-        button_start.config(width=35, height=10)
-        button_start.place(x=0 , y=0)
-        button_start.pack(ipadx=5, ipady=5, expand=5)
-
-        root.mainloop()
-    
-    except:
-        time.sleep(2)
+root.mainloop()
