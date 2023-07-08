@@ -83,10 +83,10 @@ def bound_frame(frame):
     if not Clusters.start_kmeans:
         for contour in contours:
             a = cv2.contourArea(contour)
-            # min_  = cv2.getTrackbarPos("MinArea", "Parameters")
-            # max_ = cv2.getTrackbarPos("MaxArea", "Parameters")
-            min_ = 0
-            max_ = 10000
+            min_  = cv2.getTrackbarPos("MinArea", "Parameters")
+            max_ = cv2.getTrackbarPos("MaxArea", "Parameters")
+            # min_ = 0
+            # max_ = 10000
             if a > min_ and a < max_:
                 cv2.drawContours(frame, contour, -1 ,(0, 255, 255), 7)
 
@@ -106,12 +106,12 @@ def bound_frame(frame):
 
     if Clusters.start_kmeans:
         Clusters.all_contours = Clusters.all_contours.reshape((-1, 2))
-        centroids = Clusters.init_centroids(2)
+        centroids = Clusters.init_centroids(5)
         centroids, indices = Clusters.run_kmeans(Clusters.all_contours, centroids)
 
         for centroid in centroids:
             centroid = tuple(np.uint32(centroid))
-            cv2.circle(frame, centroid, 20, (0, 255, 0), 1)
+            cv2.circle(frame, centroid, 20, (0, 255, 0), 3)
 
     cv2.imshow("img", frame)
 
@@ -130,26 +130,30 @@ cv2.createTrackbar("MinArea", "Parameters", 756, 5000, empty)
 cv2.createTrackbar("MaxArea", "Parameters", 2277, 5000, empty)
 cv2.createTrackbar("MaxApprox", "Parameters", 0, 300, empty)
 
-# while True:
-#     time.sleep(1)
-    # print(f"Attempting connection ... ")
+def real_server():
+    while True:
+        time.sleep(1)
+        print(f"Attempting connection ... ")
 
-    # try:
-    # connection, address = s.accept()
-    # count = 0
-    # for frame in service_connection():
-for frame in fake_connection():
-        # save_fake_frame(frame, count)
-        # count += 1
-    bound_frame(frame)
+        try:
+            connection, address = s.accept()
+            for frame in service_connection():
+                bound_frame(frame)
 
-        # if count == 50:
-        #     print(len(Clusters.all_contours))
-        #     print(len(Clusters.filtered_contours))
-        #     sys.exit()
-        # plt.imshow(frame)
-        # plt.show()
+        except Exception as e:
+            print(f"Connection Failed ... {e}")
 
-    # except Exception as e:
-    #     print(f"Connection Failed ... {e}")
-    
+def test_server():
+
+    frames_consumed = 0
+    frame_w, frame_h = None, None
+    while True:
+        for frame in fake_connection():
+            
+            if frame_w is None and frame_h is None:
+                frame_h, frame_w, _ = frame.shape
+
+            frames_consumed += 1
+
+if __name__ == "__main__":
+    test_server()
