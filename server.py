@@ -122,14 +122,6 @@ def bound_frame(frame):
 def empty(a):
     pass
 
-cv2.namedWindow("Parameters")
-cv2.resizeWindow("Parameters", 640, 240)
-cv2.createTrackbar("Thresh1", "Parameters", 96, 255, empty)
-cv2.createTrackbar("Thresh2", "Parameters", 140, 255, empty)
-cv2.createTrackbar("MinArea", "Parameters", 756, 5000, empty)
-cv2.createTrackbar("MaxArea", "Parameters", 2277, 5000, empty)
-cv2.createTrackbar("MaxApprox", "Parameters", 0, 300, empty)
-
 def real_server():
     while True:
         time.sleep(1)
@@ -156,4 +148,11 @@ def test_server():
             frames_consumed += 1
 
 if __name__ == "__main__":
+    cv2.namedWindow("Parameters")
+    cv2.resizeWindow("Parameters", 640, 240)
+    cv2.createTrackbar("Thresh1", "Parameters", 96, 255, empty)
+    cv2.createTrackbar("Thresh2", "Parameters", 140, 255, empty)
+    cv2.createTrackbar("MinArea", "Parameters", 756, 5000, empty)
+    cv2.createTrackbar("MaxArea", "Parameters", 2277, 5000, empty)
+    cv2.createTrackbar("MaxApprox", "Parameters", 0, 300, empty)
     test_server()
