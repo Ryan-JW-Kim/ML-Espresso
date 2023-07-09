@@ -8,24 +8,39 @@ import struct
 host = "192.168.1.188"
 port = 8080
 
-while True:
-    output_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    output_socket.connect((host, port))
-    print(f"Connection Established ...")
+# while True:
+#     output_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+#     output_socket.connect((host, port))
+#     print(f"Connection Established ...")
 
-    try:    
-        cap = cv.VideoCapture(0)
+#     try:    
+#         cap = cv.VideoCapture(0)
 
-        if cap.isOpened(): print("Success fully capturing frame ...")
+#         if cap.isOpened(): print("Success fully capturing frame ...")
         
-        while cap.isOpened():
-            ret, frame = cap.read()
-            data = pickle.dumps(frame)
-            output_socket.sendall(struct.pack("L", len(data))+data)
+#         while cap.isOpened():
+#             ret, frame = cap.read()
+#             data = pickle.dumps(frame)
+#             output_socket.sendall(struct.pack("L", len(data))+data)
 
-        cap.release()
+#         cap.release()
 
-    except Exception as e:
+#     except Exception as e:
 
-        print(f"Error ... {e}")
-        time.sleep(5)
+#         print(f"Error ... {e}")
+#         time.sleep(5)
+
+output_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+output_socket.connect((host, port))
+print(f"Connection Established ...")
+
+cap = cv.VideoCapture(0)
+
+if cap.isOpened(): print("Success fully capturing frame ...")
+
+while cap.isOpened():
+    ret, frame = cap.read()
+    data = pickle.dumps(frame)
+    output_socket.sendall(struct.pack("L", len(data))+data)
+
+cap.release()
