@@ -13,10 +13,9 @@ while True:
     output_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     output_socket.connect((host, port))
     print(f"Connection Established ...")
+    cap = cv.VideoCapture(0)
 
     try:    
-        cap = cv.VideoCapture(0)
-
         if cap.isOpened(): print("Success fully capturing frame ...")
         
         while cap.isOpened():
@@ -27,6 +26,8 @@ while True:
         cap.release()
 
     except Exception as e:
-
+        
+        cap.release()
         print(f"Error ... {e}")
+
         time.sleep(5)
