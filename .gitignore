@@ -163,6 +163,4 @@ cython_debug/
 images/
 
 # Ignore training data
-training/AmbientTempSensor
-training/HumiditySensor
-training/DigitalScaleSensor
+training/
