@@ -20,7 +20,7 @@ while True:
         
         while cap.isOpened():
             ret, frame = cap.read()
-            data = pickle.dumps(frame)
+            data = pickle.dump(frame)
             output_socket.sendall(struct.pack("L", len(data))+data)
             print("Frame Sent!")
             cv2.imshow('frame', frame)
